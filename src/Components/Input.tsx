@@ -60,7 +60,7 @@ interface IInputProps {
 }
 
 export const Input = styled(
-  memo(({ error, value, onChange, className, ...rest }: IInputProps) => {
+  ({ error, value, onChange, className, ...rest }: IInputProps) => {
     return (
       <Container className={className}>
         <InputCore
@@ -74,5 +74,5 @@ export const Input = styled(
         {error && <Error>{error}</Error>}
       </Container>
     );
-  })
+  }
 )``;
