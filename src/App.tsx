@@ -21,11 +21,7 @@ const DoMath = (salary: number) => {
 
 function App() {
   const [show, setShow] = useState(false);
-  const [salary, setSalary] = useState(0);
-  const [error, setError] = useState('')
-  const [taxReductionPerYear, setTaxReductionPerYear] = useState(
-    [] as number[]
-  );
+ 
   return (
     <AppContainer>
       <Button
@@ -37,7 +33,21 @@ function App() {
       </Button>
       {show && (
         <Popup onCross={() => setShow(false)}>
-          <FormContainer>
+          <TaxReductionForm />
+        </Popup>
+      )}
+    </AppContainer>
+  );
+}
+
+const TaxReductionForm = () => {
+  const [salary, setSalary] = useState(0);
+  const [error, setError] = useState('')
+  const [active, setActive] = useState<'term' | 'payment'>('term')
+  const [taxReductionPerYear, setTaxReductionPerYear] = useState(
+    [] as number[]
+  );
+  return <FormLayout>
             <Heading>Налоговый вычет</Heading>
             <Info>
               Используйте налоговый вычет чтобы погасить ипотеку досрочно.
@@ -87,16 +97,12 @@ function App() {
             <FlwxRow>
               <span>Что уменьшаем?</span>
               <FlwxRow>
-                <Tag active>Платёж</Tag>
-                <Tag>Срок</Tag>
+                <Tag active={active === 'payment'} onClick={() => setActive('payment')}>Платёж</Tag>
+                <Tag active={active === 'term'} onClick={() => setActive('term')}>Срок</Tag>
               </FlwxRow>
             </FlwxRow>
             <Button primary>Добавить</Button>
-          </FormContainer>
-        </Popup>
-      )}
-    </AppContainer>
-  );
+          </FormLayout>
 }
 
 const ScrollContainer = styled.div`
@@ -220,7 +226,7 @@ const AppContainer = styled.div`
   place-items: center;
 `;
 
-const FormContainer = styled.div`
+const FormLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
